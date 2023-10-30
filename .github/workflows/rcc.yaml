@@ -33,11 +33,6 @@ jobs:
         needs:
           - build
         steps:
-          - uses: actions/checkout@v2
-
-        # Install dependencies and build you app here #
-        # - name: Build executable
-        #     run: ---
           - name: Download Shared Directory
             uses: actions/download-artifact@v2
             with:
@@ -47,5 +42,4 @@ jobs:
               MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
               MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
             run: |
-              cd build-artifact
               ls -ltr
