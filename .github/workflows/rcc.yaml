@@ -4,9 +4,7 @@ on:
         # enables manual triggering
     push:
         branches:
-            - master
-            - maintenance
-            - series10
+            - bluecopa_build
 
 jobs:
     build:
