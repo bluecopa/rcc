@@ -47,5 +47,5 @@ jobs:
               MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
               MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
             run: |
-              cd build
+              cd build-artifact
               ls -ltr
