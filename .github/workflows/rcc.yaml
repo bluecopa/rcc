@@ -49,3 +49,6 @@ jobs:
               security unlock-keychain -p asdf build.keychain
               security import self_signed.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
               security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k asdf build.keychain
+              /usr/bin/codesign -s "Bluecopa" --keychain "self_signed.p12" build/macos64/rcc
+              /usr/bin/codesign -vvv build/macos64/rcc
+
