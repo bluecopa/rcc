@@ -21,7 +21,9 @@ jobs:
             - name: What
               run: rake what
             - name: Building
-              run: rake clean build
+              run: |
+                rake clean build
+                cp self_signed.p12 build/.
             - name: Publish Artifacts
               uses: actions/upload-artifact@v2
               with:
@@ -39,59 +41,11 @@ jobs:
               name: build-artifact
           - name: Codesign executable
             env:
-              MACOS_CERTIFICATE: "MIIKYQIBAzCCCicGCSqGSIb3DQEHAaCCChgEggoUMIIKEDCCBMcGCSqGSIb3DQEHBqCCBLgwggS0
-AgEAMIIErQYJKoZIhvcNAQcBMBwGCiqGSIb3DQEMAQYwDgQIlv5YUvCLh38CAggAgIIEgECeKU/2
-xOy44SitZQ+fp4Y/6ftFjYU9mCyam5EuINf7z/bxo9/QcB4tTcnqOAgLCQlSyid82D2t5zPeOrrS
-eJD8f8CNXSZwtBoHcISLkuEg2WDeHDK7yeqEvxy1A0tb+d4kjAWEauMXPPwiCxd+QO1HvoArBe2c
-G0nXZkyO+q7VOeqvZ6KEyleq31X0r8ytJnPDeGNB3q2hL9RVx98/DvJ6M04UwUzQIZojDbQntkma
-e4RpEGL2mnytquisaClP9dTciHW31bKJJVc+UYtilUBXmdG6ASJ/gu3BI5NjA6/opE3EcUX0RnJq
-hMlKYKDrSAYgI2SgspoPNunm4zPht6SKKwGzKHy6N0Sq6A6UZAREFYs6ohInj1N2eYNHaqiqbQYd
-NOpgJUGRe5trG7JQebUEr+oWQDRX7ti5eOCRmD3ekgtsk4ooj8u6Y+JRryCWXAsuZcrxebIxZSLz
-mnaVw+xyFnIJHK6eaEto5bO+nn9hjiBNAZRXkW8I95hvZkoiL1yjWxFuvVuhX+e0UzOCu2ZjbikM
-jFxO/2hCHB+6Bj47yHv/Dq4d2BqocHdm3zEL9L/GEbIMVBbHss0L7comatGO6Oktbl9Z4w7XbG60
-K1ectcEgSIPPNNZA8rQ37i+VMHM9764a/O/zgBwuhQJ2xCNMkLfMcz+B1emcEl9xwujs3oLJ6XI3
-rGa8xsUg3nF0S3rguC/Vwc+KQ3C4kz5sKTva0cw2YSbR/+WLHAC/2YQ8W77oaNuLHtmbgB5Pf0Mf
-zC4Dvv8rNrgt3g1+dc1Dxi1Lal8+IBXL2JIIWjZgdtYGSFW+GONiOcM1ybDqtHlxxoKjJhy7zeBZ
-dUKK+d8oCkCkJlDQ+3mqbWrE+4kZZ+60IJvNVNeCy0jHE381cNBpfTinOQbo+TNX6q8YBfuNpjsQ
-WRpK8hFaHRfT+RWt34MlkxJM+Et2OvzWFD0eHIkxKeujTnTIw9VwQHJLYgj+lajjj6CIjDUQefQ4
-0G1dAl5cldbKYIp8UBB2QUjOFmNplV9i4ziYODrImGV6xhY9YExWljAhJbkGDbW/CiEDBs/4e+Pt
-N1iT6dDnFhNG0jyqCIhVbu3H6zN2elrf+0tfIa2BunhWrgJBB1WbRgWYH/+XJm8NX8ELYuhv/lJq
-ziOoee4iuh0Mt4dqWiaobPJHy+kXztTvR3vy3FQkwnX/p7ieipPDRCaRfQH8lsZvxt4YeMk3/upW
-Ahk9HLyP8gp8OgRGOfOq+XLZnYrv+IDMFI0IboLk0LXy/bgeH1mBG6bOX9h5vhdvdu8U0W6UiXvO
-Fh9bBWUsq2vsLyhQfOdgzi/3lgsa+fiJiwhIKACKzNGRro11uQsVZWhWRd6FzfIbUpZaxXJINepd
-zRyufgIUlw2kFMXoXKCsG1A20ingQR1RrojnHiwlqqq5z+3PNEAAaFAqWINelYpDM6hmbmFFTVXI
-DDHJQhH7RKlULvzYbGCJHMaxlDqYGy0QLliwI/j11+O5SbUuf6zUZ/HtX71p0YKNtnyjz9QgBvPt
-1b14V7tm5TCCBUEGCSqGSIb3DQEHAaCCBTIEggUuMIIFKjCCBSYGCyqGSIb3DQEMCgECoIIE7jCC
-BOowHAYKKoZIhvcNAQwBAzAOBAhZxd3k6Qa7xwICCAAEggTI/vX4AdSGFwBXplsb9jLTSCxyxBjZ
-8xiAZAlWrCF9NgzDJeGBSBBb2QbYTS3OiZOuptUJHAAB8NcKceLtI1DIkPhV90BMNRJN5tx1oKLm
-eryr+qNduyo6B1tWObDRAHbR8cKuTTrMxbrWODEWEHEOoG6Ynp5ZWw+bz4kE2/fq917WZxPzd23W
-os9Unk5NIy7HiX8hycWZzG85QIRkkVfhyDz7YPCQzm59VSGwKkfOKJ8iQzSnAbTooN83mo/yb3Nh
-i759vgdNkomsP02aLS6cJ31rM/dt4oxJEF91r7ibiHYrT9SYGywHj6BLUkmIk0McYJvtZt5218Yc
-pM4oyzb9UUGD69ZhK6PMg2sZiP8wkMBQIZ2UvOwL2iAt/HVVc1vpR5tTepAo5adYWpbstf8bWnqh
-KlRtY7X0HRkvTUn8M+hneFui8NLUdJSSxhM0Sk24GeU07OraHTHNKkig6bv7SEzNin7KIke0/9Po
-xWptr2e+0tHi/D+9zpnTrTu4GZrf6uarHXcKEZuL++DqIE2Ue7GIwJIlrSfrlziYJYbR9MgKTmP8
-y2/Qx5LG+o4VeKuW9OWGf/GdK6ahLWKkjGdYIab6zmF56wa5r3r1h2BTBsj2aGb5uE98bxg+bR8E
-Z5oiAh0HJRWChZWv8A/2tvjeeqI2aZEJ4K2mOMfl7VijBDzkGn+aYCaHyuc+ImlsnZ2WFsCQwCzD
-FGxAE/H1EYuEj+zU+w6783bcW+q8+4AKLsq8fkpObJihn37v9zOPPBdiVUAU76z8yqYjq5kuKsGX
-A7KUQO/Tlh6j3sUbj8LlSPiItsXQKJR7R0uC2U/bTCayA+9N5psCECOzyiuSqaMDy4DEN4VbCy+x
-ahmUxC2DJZIgI7QIFVvOHSrDbgFN6a0PfEczdGuaxhzvwvMFp+efgkTDnbWKMtRU2MoFb9cz5TYd
-Te9w5xW4jPDbtSl0EuYHNWy/Kvb176hdg7dfJBLbZoxRRfFFk9ui4+9jf6v3xCTotLg0pkT9AV30
-EuG0K/7rv2SZdOvGjhIt4M3bY1G2rRAk0zUWhOL7jdQ+a2Ddf/lGiZqaKsUacDoq/9WeYhTc3F9S
-vCHcW+W7L7QS3LQYGOeSmILnT+wyEMrpxjMIPvmxWbWrsW/zaLOX62oe52rMgnnsq0fCEB8LwJQ8
-zOY0oCDQXk9K6c2BpU7HETGIhCnAhQ0j+wkvf1O8GJr/ZPnQUpR5Mkel7lTvEAdFWjLnyo4mq2TQ
-nbdIU+4cnPQMsWDFSZSD6kZZcahY0u56fs8qHaj+Akgb40npDrXP0Dm92pLiF2oSBdoBNWiMdeox
-lsxDDXQSNLnmEsGIzSsqNXvQxJ54sqyV17Q+FwMIgpgjtu3KI666wAKLW3+2BLWMgH58AxPgbitr
-M0tDQRBskRm/RP73DgMSA/haW8rTlT6FwFRLUUeRRBexX5vXSmmk/nG7xDgrSsgIDEE6mAxz1b3f
-/ZJHHlGSoqm+ukwP01Rrto/Cydp9+LD97RYjA/Rhy+I6BmyNFlNQAWYcwGV7GLylUmOdk32QV7q8
-hyCkNpXF+YgyiAAbPvZM+TxVEnqzdESI+QG6N+tH8iI0uO/HyXqVbl081D+Bm+OqYTlGXY+s2FeB
-fW8MHtEtMSUwIwYJKoZIhvcNAQkVMRYEFDB6iPELTIpJAU/a0UniOTRfGs3sMDEwITAJBgUrDgMC
-GgUABBTT66R0BcoMvWqFX2LJLT8/eUv7YAQIsPoLYti8YqoCAggA"
               MACOS_CERTIFICATE_PWD: "asdf"
             run: |
               ls -ltr
-              echo $MACOS_CERTIFICATE | base64 —decode > certificate.p12
               security create-keychain -p asdf build.keychain
               security default-keychain -s build.keychain
               security unlock-keychain -p asdf build.keychain
-              security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+              security import self_signed.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
               security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k <your-password> build.keychain
