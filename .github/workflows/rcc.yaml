@@ -7,9 +7,9 @@ on:
             - bluecopa_build
 
 jobs:
-    macos:
-        name: MacOs
-        runs-on: macos-11.0
+    build:
+        name: Build
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/setup-go@v3
               with:
@@ -22,3 +22,19 @@ jobs:
               run: rake what
             - name: Building
               run: rake clean build
+    macos:
+        name: MacOs
+        runs-on: macos-11.0
+        steps:
+          - uses: actions/checkout@v2
+
+        # Install dependencies and build you app here #
+        # - name: Build executable
+        #     run: ---
+
+          - name: Codesign executable
+            env:
+              MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+              MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+            run: |
+              pwd
