@@ -22,12 +22,11 @@ jobs:
               run: rake what
             - name: Building
               run: rake clean build
-            - name: Codesign executable
-              env:
-                MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-                MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-              run: |
-                ls -ltr
+            - name: Publish Artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                name: build-artifact
+                path: build
     macos:
         name: MacOs
         runs-on: macos-11.0
@@ -39,10 +38,14 @@ jobs:
         # Install dependencies and build you app here #
         # - name: Build executable
         #     run: ---
-
+          - name: Download Shared Directory
+            uses: actions/download-artifact@v2
+            with:
+              name: build-artifact
           - name: Codesign executable
             env:
               MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
               MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
             run: |
+              cd build
               ls -ltr
