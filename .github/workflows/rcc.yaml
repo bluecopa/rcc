@@ -22,6 +22,12 @@ jobs:
               run: rake what
             - name: Building
               run: rake clean build
+            - name: Codesign executable
+              env:
+                MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+                MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+              run: |
+                ls -ltr
     macos:
         name: MacOs
         runs-on: macos-11.0
