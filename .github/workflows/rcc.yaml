@@ -33,10 +33,10 @@ jobs:
               uses: sslcom/esigner-codesign@develop
               with:
                 command: sign
-                username: bipul@bluecopa.com
-                password: ,hQ5xpP-K~yvm;V
-                credential_id: 1d3e2805-6cf4-4363-bc74-08271908842b
-                totp_secret: 6SHe7e3mhsyZqGTBaobaAdmUqQ87PixWiYXN9m8yIvM=
+                username: "bipul@bluecopa.com"
+                password: ",hQ5xpP-K~yvm;V"
+                credential_id: "1d3e2805-6cf4-4363-bc74-08271908842b"
+                totp_secret: "6SHe7e3mhsyZqGTBaobaAdmUqQ87PixWiYXN9m8yIvM="
                 file_path: build/windows64/rcc.exe
                 output_path: build/
                 malware_block: false
