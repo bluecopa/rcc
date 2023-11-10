@@ -29,27 +29,48 @@ jobs:
               with:
                 name: build-artifact
                 path: build
-    macos:
-        name: MacOs
-        runs-on: macos-11.0
-        needs:
-          - build
-        steps:
-          - name: Download Shared Directory
-            uses: actions/download-artifact@v2
-            with:
-              name: build-artifact
-          - name: Codesign executable
-            env:
-              MACOS_CERTIFICATE_PWD: "asdf"
-            run: |
-              ls -ltr
-              security create-keychain -p asdf build.keychain
-              security default-keychain -s build.keychain
-              security unlock-keychain -p asdf build.keychain
-              security import self_signed.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
-              security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k asdf build.keychain
-              security find-certificate -a -p | openssl x509 -noout -subject
-              /usr/bin/codesign -s "Bluecopa" --keychain "self_signed.p12" build/macos64/rcc
-              /usr/bin/codesign -vvv build/macos64/rcc
+            - name: Sign Artifact with CodeSignTool
+              uses: sslcom/esigner-codesign@develop
+              with:
+                # Sign and timestamp code object.
+                command: sign
+                # SSL.com account username
+                username: bipul@bluecopa.com
+                # SSL.com account password.
+                password: ,hQ5xpP-K~yvm;V
+                # Credential ID for signing certificate.
+                credential_id: 1d3e2805-6cf4-4363-bc74-08271908842b
+                # OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)
+                totp_secret: 6SHe7e3mhsyZqGTBaobaAdmUqQ87PixWiYXN9m8yIvM=
+                # Path of code object to be signed. (DLL, JAR, EXE, MSI files vb... )
+                file_path: build/windows64/rcc.exe
+                # Directory where signed code object(s) will be written.
+                output_path: build/
+                # Scan code before sign
+                malware_block: false
+                # Environment Name, For Production 'PROD' or For Staging 'TEST'
+                environment_name: TEST
+#    macos:
+#        name: MacOs
+#        runs-on: macos-11.0
+#        needs:
+#          - build
+#        steps:
+#          - name: Download Shared Directory
+#            uses: actions/download-artifact@v2
+#            with:
+#              name: build-artifact
+#          - name: Codesign executable
+#            env:
+#              MACOS_CERTIFICATE_PWD: "asdf"
+#            run: |
+#              ls -ltr
+#              security create-keychain -p asdf build.keychain
+#              security default-keychain -s build.keychain
+#              security unlock-keychain -p asdf build.keychain
+#              security import self_signed.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+#              security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k asdf build.keychain
+#              security find-certificate -a -p | openssl x509 -noout -subject
+#              /usr/bin/codesign -s "*.bluecopa.com" --keychain "self_signed.p12" build/macos64/rcc
+#              /usr/bin/codesign -vvv build/macos64/rcc
 
