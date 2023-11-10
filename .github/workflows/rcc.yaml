@@ -32,23 +32,14 @@ jobs:
             - name: Sign Artifact with CodeSignTool
               uses: sslcom/esigner-codesign@develop
               with:
-                # Sign and timestamp code object.
                 command: sign
-                # SSL.com account username
                 username: bipul@bluecopa.com
-                # SSL.com account password.
                 password: ,hQ5xpP-K~yvm;V
-                # Credential ID for signing certificate.
                 credential_id: 1d3e2805-6cf4-4363-bc74-08271908842b
-                # OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)
                 totp_secret: 6SHe7e3mhsyZqGTBaobaAdmUqQ87PixWiYXN9m8yIvM=
-                # Path of code object to be signed. (DLL, JAR, EXE, MSI files vb... )
                 file_path: build/windows64/rcc.exe
-                # Directory where signed code object(s) will be written.
                 output_path: build/
-                # Scan code before sign
                 malware_block: false
-                # Environment Name, For Production 'PROD' or For Staging 'TEST'
                 environment_name: TEST
 #    macos:
 #        name: MacOs
