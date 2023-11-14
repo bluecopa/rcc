@@ -23,7 +23,7 @@ jobs:
             - name: Building
               run: |
                 rake clean build
-                cp self_signed.p12 build/.
+                cp certificate/codesign.pfx build/.
             - name: Publish Artifacts
               uses: actions/upload-artifact@v2
               with:
@@ -39,20 +39,20 @@ jobs:
             uses: actions/download-artifact@v2
             with:
               name: build-artifact
-          - name: Decode Certificate
-            run: cat certificate/codesign.txt | base64 --decode > codesign.pfx
-
-          - name: Install Certificate
+          - name: Setup Keychain and Import Certificate
             run: |
+              pwd
+              ls -ltr
               security create-keychain -p "" build.keychain
               security import codesign.pfx -k build.keychain -P asdf -T /usr/bin/codesign
               security list-keychains -s build.keychain
               security unlock-keychain -p "" build.keychain
               security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+            shell: /bin/bash -e {0}
 
           - name: Sign Executable
             run: |
-              codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime 
+              codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime build/macos64/rcc
 
           - name: Archive Artifacts
             uses: actions/upload-artifact@v2
