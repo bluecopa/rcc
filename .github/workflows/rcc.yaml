@@ -52,15 +52,23 @@ jobs:
 
           - name: Sign Executable
             run: |
-              ls -ltr
+              echo "**********************************************************"
               security find-certificate -a -e "support@bluecopa.com" build.keychain
-              ls -ltr
+              echo "**********************************************************"
+              security list-keychains
+              echo "**********************************************************"
+              ls /Users/runner/Library/Keychains/build.keychain-db
+              echo "**********************************************************"
+              security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
+              echo "**********************************************************"
+              security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
+              echo "**********************************************************"
               security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
-              ls -ltr
+              echo "**********************************************************"
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              ls -ltr macos64
+              echo "**********************************************************"
               codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
-              ls -ltr
+              echo "**********************************************************"
 
           - name: Archive Artifacts
             uses: actions/upload-artifact@v2
