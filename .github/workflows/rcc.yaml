@@ -52,6 +52,7 @@ jobs:
 
           - name: Sign Executable
             run: |
+              security find-certificate -a -c "Bluecopa" -s build.keychain
               codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime macos64/rcc
 
           - name: Archive Artifacts
