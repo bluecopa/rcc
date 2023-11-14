@@ -56,7 +56,7 @@ jobs:
               security find-certificate -a -e "support@bluecopa.com" build.keychain
               ls -ltr
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              ls -ltr
+              ls -ltr macos64
               codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
               ls -ltr
 
