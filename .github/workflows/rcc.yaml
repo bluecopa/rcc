@@ -52,7 +52,7 @@ jobs:
 
           - name: Sign Executable
             run: |
-              codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime build/macos64/rcc
+              codesign --sign "*.bluecopa.com" --keychain build.keychain --timestamp --options runtime macos64/rcc
 
           - name: Archive Artifacts
             uses: actions/upload-artifact@v2
