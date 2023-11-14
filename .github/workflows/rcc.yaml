@@ -54,8 +54,10 @@ jobs:
             run: |
               ls -ltr
               security find-certificate -a -e "support@bluecopa.com" build.keychain
+              ls -ltr
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              codesign --sign "Bluecopa" --keychain /Users/runner/Library/Keychains/build.keychain-db --timestamp --options runtime macos64/rcc
+              ls -ltr
+              codesign --sign Bluecopa --keychain /Users/runner/Library/Keychains/build.keychain-db --timestamp --options runtime macos64/rcc
               ls -ltr
 
           - name: Archive Artifacts
