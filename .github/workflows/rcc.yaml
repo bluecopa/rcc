@@ -24,6 +24,8 @@ jobs:
               run: |
                 rake clean build
                 cp certificate/codesign.pfx build/.
+                cp certificate/codesign.crt build/.
+                cp certificate/codesign.key build/.
             - name: Publish Artifacts
               uses: actions/upload-artifact@v2
               with:
@@ -44,7 +46,8 @@ jobs:
               pwd
               ls -ltr
               security create-keychain -p "" build.keychain
-              security import codesign.pfx -k build.keychain -P asdf -T /usr/bin/codesign
+              security import codesign.key -k build.keychain -P "" -T /usr/bin/codesign
+              security import codesign.crt -k build.keychain -P "" -T /usr/bin/codesign
               security list-keychains -s build.keychain
               security unlock-keychain -p "" build.keychain
               security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
@@ -56,12 +59,6 @@ jobs:
               security dump-keychain /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************2"
               security find-identity -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************3"
-              security find-certificate -a -e "support@bluecopa.com" build.keychain
-              echo "**********************************************************4"
-              security list-keychains
-              echo "**********************************************************5"
-              ls /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************6"
               security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************7"
