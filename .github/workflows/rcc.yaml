@@ -57,6 +57,10 @@ jobs:
               echo "**********************************************************6"
               security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
               echo "**********************************************************7"
+              security list-keychains
+              echo "**********************************************************8"
+              security find-certificate -c "Bluecopa" -p build.keychain
+              echo "**********************************************************9"
               security find-identity -p codesigning -v build.keychain
               echo "**********************************************************8"
             shell: /bin/bash -e {0}
