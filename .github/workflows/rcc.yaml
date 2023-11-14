@@ -63,11 +63,11 @@ jobs:
               echo "**********************************************************"
               security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************"
-              security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
+              security find-identity -p asdf -v /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************"
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
               echo "**********************************************************"
-              codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
+              codesign -s "Bluecopa" -o runtime --timestamp macos64/rcc
               echo "**********************************************************"
 
           - name: Archive Artifacts
