@@ -52,23 +52,25 @@ jobs:
 
           - name: Sign Executable
             run: |
-              echo "**********************************************************"
+              echo "**********************************************************1"
+              security dump-keychain /Users/runner/Library/Keychains/build.keychain-db
+              echo "**********************************************************2"
               security find-identity -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************"
+              echo "**********************************************************3"
               security find-certificate -a -e "support@bluecopa.com" build.keychain
-              echo "**********************************************************"
+              echo "**********************************************************4"
               security list-keychains
-              echo "**********************************************************"
+              echo "**********************************************************5"
               ls /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************"
+              echo "**********************************************************6"
               security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************"
+              echo "**********************************************************7"
               security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************"
+              echo "**********************************************************8"
               security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************"
+              echo "**********************************************************9"
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              echo "**********************************************************"
+              echo "**********************************************************10"
               codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
               echo "**********************************************************"
 
