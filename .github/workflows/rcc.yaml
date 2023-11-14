@@ -52,7 +52,7 @@ jobs:
 
           - name: Sign Executable
             run: |
-              security find-certificate -a -e "support@bluecopa" build.keychain
+              security find-certificate -a -e "support@bluecopa.com" build.keychain
               codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime macos64/rcc
 
           - name: Archive Artifacts
