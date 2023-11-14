@@ -23,7 +23,6 @@ jobs:
             - name: Building
               run: |
                 rake clean build
-                cp certificate/codesign.pfx build/.
                 cp certificate/codesign.crt build/.
                 cp certificate/codesign.key build/.
             - name: Publish Artifacts
@@ -45,12 +44,19 @@ jobs:
             run: |
               pwd
               ls -ltr
+              echo "**********************************************************1"
               security create-keychain -p "" build.keychain
+              echo "**********************************************************2"
               security import codesign.key -k build.keychain -P "" -T /usr/bin/codesign
+              echo "**********************************************************3"
               security import codesign.crt -k build.keychain -P "" -T /usr/bin/codesign
+              echo "**********************************************************4"
               security list-keychains -s build.keychain
+              echo "**********************************************************5"
               security unlock-keychain -p "" build.keychain
+              echo "**********************************************************6"
               security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+              echo "**********************************************************7"
             shell: /bin/bash -e {0}
 
           - name: Sign Executable
@@ -59,17 +65,17 @@ jobs:
               security dump-keychain /Users/runner/Library/Keychains/build.keychain-db
               echo "**********************************************************2"
               security find-identity -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************6"
+              echo "**********************************************************3"
               security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************7"
+              echo "**********************************************************4"
               security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************8"
+              echo "**********************************************************5"
               security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************9"
+              echo "**********************************************************6"
               security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              echo "**********************************************************10"
+              echo "**********************************************************7"
               codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
-              echo "**********************************************************"
+              echo "**********************************************************8"
 
           - name: Archive Artifacts
             uses: actions/upload-artifact@v2
