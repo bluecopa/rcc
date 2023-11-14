@@ -29,39 +29,34 @@ jobs:
               with:
                 name: build-artifact
                 path: build
-            - name: Sign Artifact with CodeSignTool
-              uses: sslcom/esigner-codesign@develop
-              with:
-                command: sign
-                username: "bipul@bluecopa.com"
-                password: ",hQ5xpP-K~yvm;V"
-                credential_id: "1d3e2805-6cf4-4363-bc74-08271908842b"
-                totp_secret: "6SHe7e3mhsyZqGTBaobaAdmUqQ87PixWiYXN9m8yIvM="
-                file_path: build/windows64/rcc.exe
-                output_path: build/
-                malware_block: false
-                environment_name: TEST
-#    macos:
-#        name: MacOs
-#        runs-on: macos-11.0
-#        needs:
-#          - build
-#        steps:
-#          - name: Download Shared Directory
-#            uses: actions/download-artifact@v2
-#            with:
-#              name: build-artifact
-#          - name: Codesign executable
-#            env:
-#              MACOS_CERTIFICATE_PWD: "asdf"
-#            run: |
-#              ls -ltr
-#              security create-keychain -p asdf build.keychain
-#              security default-keychain -s build.keychain
-#              security unlock-keychain -p asdf build.keychain
-#              security import self_signed.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
-#              security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k asdf build.keychain
-#              security find-certificate -a -p | openssl x509 -noout -subject
-#              /usr/bin/codesign -s "*.bluecopa.com" --keychain "self_signed.p12" build/macos64/rcc
-#              /usr/bin/codesign -vvv build/macos64/rcc
+    macos:
+        name: MacOs Code Signing
+        runs-on: macos-latest
+        needs:
+          - build
+        steps:
+          - name: Download Shared Directory
+            uses: actions/download-artifact@v2
+            with:
+              name: build-artifact
+          - name: Decode Certificate
+            run: cat certificate/codesign.txt | base64 --decode > codesign.pfx
+
+          - name: Install Certificate
+            run: |
+              security create-keychain -p "" build.keychain
+              security import codesign.pfx -k build.keychain -P asdf -T /usr/bin/codesign
+              security list-keychains -s build.keychain
+              security unlock-keychain -p "" build.keychain
+              security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+          - name: Sign Executable
+            run: |
+              codesign --sign "Bluecopa" --keychain build.keychain --timestamp --options runtime 
+
+          - name: Archive Artifacts
+            uses: actions/upload-artifact@v2
+            with:
+              name: signed-executable
+              path: build-artifact
 
