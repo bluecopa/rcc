@@ -38,7 +38,7 @@ jobs:
                 password: ",hQ5xpP-K~yvm;V"
                 credential_id: "1d3e2805-6cf4-4363-bc74-08271908842b"
                 totp_secret: "e7W8iFmkKwVywxORiM/Wf8OHhGdr6a7KqMiPprIUnfM="
-                file_path: "build/windows64/rcc.exe"
+                file_path: "build/macos64/rcc"
                 output_path: build/
                 malware_block: false
                 environment_name: PROD
