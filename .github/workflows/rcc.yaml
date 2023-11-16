@@ -41,7 +41,7 @@ jobs:
                 file_path: "build/windows64/rcc.exe"
                 output_path: build/
                 malware_block: false
-                environment_name: TEST
+                environment_name: PROD
     macos:
         name: MacOs Code Signing
         runs-on: macos-latest
