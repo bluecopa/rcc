@@ -43,6 +43,24 @@ jobs:
                 asset_path: build/rcc.exe
                 asset_name: rcc.exe
                 asset_content_type: application/octet-stream
+            - name: Upload Artifact to Release
+              uses: actions/upload-release-asset@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GPAT }}
+              with:
+                upload_url: ${{ github.event.release.upload_url }}
+                asset_path: build/linux64/rcc
+                asset_name: rcc(linux64)
+                asset_content_type: application/octet-stream
+            - name: Upload Artifact to Release
+              uses: actions/upload-release-asset@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GPAT }}
+              with:
+                upload_url: ${{ github.event.release.upload_url }}
+                asset_path: build/macos64/rcc
+                asset_name: rcc(macos64)
+                asset_content_type: application/octet-stream
 #    macos:
 #        name: MacOs Code Signing
 #        runs-on: macos-latest
