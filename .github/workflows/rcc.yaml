@@ -39,7 +39,7 @@ jobs:
               env:
                 GITHUB_TOKEN: ${{ secrets.GPAT }}
               with:
-                upload_url: ${{ steps.create_release.outputs.upload_url }}
+                upload_url: ${{ github.event.release.upload_url }}
                 asset_path: build/rcc.exe
                 asset_name: rcc.exe
                 asset_content_type: application/octet-stream
