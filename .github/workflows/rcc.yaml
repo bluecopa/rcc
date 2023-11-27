@@ -32,7 +32,7 @@ jobs:
                 password: ${{ secrets.ESIGNER_PASSWORD }}
                 credential_id: "1d3e2805-6cf4-4363-bc74-08271908842b"
                 totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
-                file_path: "bluecopa-desktop_0.0.6_x64.dmg"
+                file_path: "build/windows64/rcc.exe"
                 output_path: build/
                 malware_block: false
                 environment_name: PROD
