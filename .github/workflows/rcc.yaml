@@ -22,82 +22,76 @@ jobs:
               run: rake what
             - name: Building
               run: |
+                mkdir signed
                 rake clean build
-                cp certificate/codesign.crt build/.
-                cp certificate/codesign.key build/.
-            - name: Publish Artifacts
-              uses: actions/upload-artifact@v2
-              with:
-                name: build-artifact
-                path: build
             - name: Sign Artifact with CodeSignTool
               uses: sslcom/esigner-codesign@develop
               with:
                 command: sign
                 username: "bipul@bluecopa.com"
-                password: ",hQ5xpP-K~yvm;V"
+                password: ${{ secrets.ESIGNER_PASSWORD }}
                 credential_id: "1d3e2805-6cf4-4363-bc74-08271908842b"
-                totp_secret: "e7W8iFmkKwVywxORiM/Wf8OHhGdr6a7KqMiPprIUnfM="
+                totp_secret: ${{ secrets.ESIGNER_TOTP_SECRET }}
                 file_path: "bluecopa-desktop_0.0.6_x64.dmg"
                 output_path: build/
                 malware_block: false
                 environment_name: PROD
-    macos:
-        name: MacOs Code Signing
-        runs-on: macos-latest
-        needs:
-          - build
-        steps:
-          - name: Download Shared Directory
-            uses: actions/download-artifact@v2
-            with:
-              name: build-artifact
-          - name: Setup Keychain and Import Certificate
-            run: |
-              pwd
-              ls -ltr
-              echo "**********************************************************1"
-              security create-keychain -p "" build.keychain
-              echo "**********************************************************2"
-              security import codesign.key -k build.keychain -P "" -T /usr/bin/codesign
-              echo "**********************************************************3"
-              security import codesign.crt -k build.keychain -P "" -T /usr/bin/codesign
-              echo "**********************************************************4"
-              security list-keychains -s build.keychain
-              echo "**********************************************************5"
-              security unlock-keychain -p "" build.keychain
-              echo "**********************************************************6"
-              security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-              echo "**********************************************************7"
-              security list-keychains
-              echo "**********************************************************8"
-              security find-certificate -c "Bluecopa" -p build.keychain
-              echo "**********************************************************9"
-              security find-identity -p codesigning -v build.keychain
-              echo "**********************************************************8"
-            shell: /bin/bash -e {0}
-
-          - name: Sign Executable
-            run: |
-              echo "**********************************************************1"
-              security dump-keychain /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************2"
-              security find-identity -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************3"
-              security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************4"
-              security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************5"
-              security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
-              echo "**********************************************************6"
-              security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
-              echo "**********************************************************7"
-              codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
-              echo "**********************************************************8"
-
-          - name: Archive Artifacts
-            uses: actions/upload-artifact@v2
-            with:
-              name: signed-executable
-              path: build-artifact
-
+#    macos:
+#        name: MacOs Code Signing
+#        runs-on: macos-latest
+#        needs:
+#          - build
+#        steps:
+#          - name: Download Shared Directory
+#            uses: actions/download-artifact@v2
+#            with:
+#              name: build-artifact
+#          - name: Setup Keychain and Import Certificate
+#            run: |
+#              pwd
+#              ls -ltr
+#              echo "**********************************************************1"
+#              security create-keychain -p "" build.keychain
+#              echo "**********************************************************2"
+#              security import codesign.key -k build.keychain -P "" -T /usr/bin/codesign
+#              echo "**********************************************************3"
+#              security import codesign.crt -k build.keychain -P "" -T /usr/bin/codesign
+#              echo "**********************************************************4"
+#              security list-keychains -s build.keychain
+#              echo "**********************************************************5"
+#              security unlock-keychain -p "" build.keychain
+#              echo "**********************************************************6"
+#              security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+#              echo "**********************************************************7"
+#              security list-keychains
+#              echo "**********************************************************8"
+#              security find-certificate -c "Bluecopa" -p build.keychain
+#              echo "**********************************************************9"
+#              security find-identity -p codesigning -v build.keychain
+#              echo "**********************************************************8"
+#            shell: /bin/bash -e {0}
+#
+#          - name: Sign Executable
+#            run: |
+#              echo "**********************************************************1"
+#              security dump-keychain /Users/runner/Library/Keychains/build.keychain-db
+#              echo "**********************************************************2"
+#              security find-identity -v /Users/runner/Library/Keychains/build.keychain-db
+#              echo "**********************************************************3"
+#              security show-keychain-info /Users/runner/Library/Keychains/build.keychain-db
+#              echo "**********************************************************4"
+#              security unlock-keychain -p asdf /Users/runner/Library/Keychains/build.keychain-db
+#              echo "**********************************************************5"
+#              security find-identity -p codesigning -v /Users/runner/Library/Keychains/build.keychain-db
+#              echo "**********************************************************6"
+#              security find-certificate -c "Bluecopa" -p /Users/runner/Library/Keychains/build.keychain-db | openssl x509 -inform pem -noout -subject
+#              echo "**********************************************************7"
+#              codesign --keychain /Users/runner/Library/Keychains/build.keychain-db -s "Bluecopa" -o runtime --timestamp macos64/rcc
+#              echo "**********************************************************8"
+#
+#          - name: Archive Artifacts
+#            uses: actions/upload-artifact@v2
+#            with:
+#              name: signed-executable
+#              path: build-artifact
+#
