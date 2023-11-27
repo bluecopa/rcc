@@ -1,10 +1,7 @@
 name: Rcc
 on:
-    workflow_dispatch:
-        # enables manual triggering
-    push:
-      tags:
-        - 'v[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [created]
 
 jobs:
     build:
